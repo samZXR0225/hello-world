@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # AngularSample
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
@@ -30,4 +29,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # hello-world
 start use phase
 はじめの一歩なのでなんでもよいです。
->>>>>>> remotes/GitHub1/master
