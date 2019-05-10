@@ -8,7 +8,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductService {
-  TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxZDE5OWRkZDBlZTVlNzMzZGI0YTliN2FiNDAxZGRhMzgxNTliNjIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZmlyLXNhbXBsZS1hYzg0ZCIsImF1ZCI6ImZpci1zYW1wbGUtYWM4NGQiLCJhdXRoX3RpbWUiOjE1NTc0MDAzODcsInVzZXJfaWQiOiI0bnIwUE9XSkJjVjh4eWMzTVd1R29GdDVkM0MzIiwic3ViIjoiNG5yMFBPV0pCY1Y4eHljM01XdUdvRnQ1ZDNDMyIsImlhdCI6MTU1NzQwMDM4NywiZXhwIjoxNTU3NDAzOTg3LCJlbWFpbCI6InRzYWlkYTAyMjVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRzYWlkYTAyMjVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.or2DPtDf6-wZ3nnLi_SJcoN6MvlY_Pfc8-TlNSTWY00vj7qqFX9ZY8WCDO_0elVXtBLhu5d50gmpwTQgqe3fLZgQ6XpuPQET7FyIcadVljmLL7YvIbehFz9loshhfo0o8pY91UidbHTg1JZO_iR-fC6GKxXUh_UzcOTBh8NRcGzkA_Mv7QJxNONmUJpG9wRDDz-B4CB6m8xnsYpH7jkapACmVQ_3ILH6GIkBL9ESFboCPdTxJEUWyEE-UvgIGG4SRr9ckWh735Yanq0zpdMAsoh3SNUkcWuX7jsGPOjFoYDiMN-8c3ClB-5ECmszjHAot1xegKtM02QQLLSClaUqsQ';
+  BASE_URL = 'https://fir-sample-ac84d.firebaseio.com'; // <= 追加
+  UID = '4nr0POWJBcV8xyc3MWuGoFt5d3C3';  // <= 追加  
+  TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxZDE5OWRkZDBlZTVlNzMzZGI0YTliN2FiNDAxZGRhMzgxNTliNjIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZmlyLXNhbXBsZS1hYzg0ZCIsImF1ZCI6ImZpci1zYW1wbGUtYWM4NGQiLCJhdXRoX3RpbWUiOjE1NTc0NjQ1MzksInVzZXJfaWQiOiI0bnIwUE9XSkJjVjh4eWMzTVd1R29GdDVkM0MzIiwic3ViIjoiNG5yMFBPV0pCY1Y4eHljM01XdUdvRnQ1ZDNDMyIsImlhdCI6MTU1NzQ2NDUzOSwiZXhwIjoxNTU3NDY4MTM5LCJlbWFpbCI6InRzYWlkYTAyMjVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRzYWlkYTAyMjVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.ZrH3nsQ5oUNchFFaB_ICP7FbWXb8cciSuMbBcj2QhOjVpb2aVE1j1WdaAaRY_1IcPrS3Ezh8_lahGup4AJK0xMvBrrM38FD36MS2rfA6dCNsnfa5FJevEnINsJhGbQDTsnFGqG1B20mTYHscAC2MTaB_TOTqrnkhJkgf5wYh2V9Ec6EiXmInGWRwNlF4xFf2cKwGhd4Jb2wgOHpX9cla5ZN_XaACJcbJlWVDZOkbvpcRZXHVC-UFdEz8GohxIiolx0ZPefD0cxXNEPwlOTXmWHvfKCqGh6VnUW_JtlE8bQSl9NpDdsY20YN59xbTMCbSOpsKV9TiNu-wyq5q9KQn5A';
 
   products: Product[] = [
     new Product(1, 'Angular入門書「天地創造の章」', 3800, '神は云った。「Angularあれ」。するとAngularが出来た。'),
@@ -18,7 +20,7 @@ export class ProductService {
   ];
 
   constructor(
-    private http:HttpClient,
+    private http: HttpClient,
   ) { }
 
   // list(): Observable<Product[]> {
@@ -27,25 +29,66 @@ export class ProductService {
   // }
 
   list(): Observable<Product[]> { // 変更↓
-    return this.http.get(`https://fir-sample-ac84d.firebaseio.com/products.json`, { params: { auth: this.TOKEN } }).pipe(
-      map((response: any) =>
-        Object.keys(response).map((key: string) => {
-          console.log(response);
-          const prd = response[key];
-          return new Product(prd.id, prd.name, prd.price, prd.description);
-        })
+    return this.http.get(`${this.BASE_URL}/users/${this.UID}/products.json`, { params: { auth: this.TOKEN } }).pipe(
+      map((response: any) => {
+        if (response) {
+          return Object.keys(response).map((key: string) => {
+            const prd = response[key];
+            return new Product(key, prd.name, prd.price, prd.description);
+          });
+        } else {
+          return [];
+        }
+      }
       )
+    );
+
+    // map((response: any) => {
+    //   Object.keys(response).map((key: string) => {
+    //     console.log(response);
+    //     const prd = response[key];
+    //     return new Product(key, prd.name, prd.price, prd.description);
+    //   }
+    //   )
+    // )
+  }
+
+  create(product: Product): Observable<void> {
+    return this.http.post(`${this.BASE_URL}/users/${this.UID}/products.json`, product, { params: { auth: this.TOKEN } }).pipe(
+      map((response:any) => product.key = response.name),
     );
   }
 
+  get(key: string): Observable<Product> {
+    // let target: Product = this.products[id - 1];
+    // return of(this.products[id - 1]);
+    return this.http.get(`${this.BASE_URL}/users/${this.UID}/products/${key}.json`, { params: { auth: this.TOKEN } }).pipe(
+      map((response:any) => {
+        return new Product(key, response.name, response.price, response.description);
+      })
+    );
 
-  get(id: number): Observable<Product> {
-    let target: Product = this.products[id - 1];
-    return of(this.products[id - 1]);
   }
 
-  update(product:Product): void {
-    const index = this.products.findIndex((prd:Product) => prd.id === product.id);
-    this.products[index] = product;
+  delete(key: string): Observable<void> {
+    return this.http.delete(`${this.BASE_URL}/users/${this.UID}/products/${key}.json`, { params: { auth: this.TOKEN } }).pipe(
+      map(() => {})
+    );
+  }
+
+  update(product: Product): Observable<void> {
+    // const index = this.products.findIndex((prd: Product) => prd.key === product.key);
+    // this.products[index] = product;
+    return this.http.patch(`${this.BASE_URL}/users/${this.UID}/products/${product.key}.json`, 
+    {
+      name: product.name,
+      priice: product.price,
+      description: product.description
+    },
+    { params: { auth: this.TOKEN } }).pipe(
+      map(() => {
+      })
+    );
+
   }
 }

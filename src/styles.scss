@@ -7,8 +7,8 @@
     height: 35px;
     width: 135px;
     border-radius: 4px;
-    background-color: #2196F3;
-    color: #FFFFFF;
+    background-color: #2196f3;
+    color: #ffffff;
     font-size: 14px;
     line-height: 21px;
     cursor: pointer;
@@ -19,5 +19,8 @@
         color: #212121;
         background-color: white;
         border: 1px solid #212121;
+    }
+    &.red {
+        background-color: #f44336;
     }
 }

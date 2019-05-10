@@ -9,6 +9,7 @@ import { ProductListComponent } from './product/product-list/product-list.compon
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { ForbiddenWordValidatorDirective } from './shared/validators/forbidden-word';
+import { ProductNewComponent } from './product/product-new/product-new.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ForbiddenWordValidatorDirective } from './shared/validators/forbidden-w
     ProductDetailComponent,
     ProductEditComponent,
     ForbiddenWordValidatorDirective,
+    ProductNewComponent,
   ],
   imports: [
     BrowserModule,

@@ -21,8 +21,8 @@
     <form (ngSubmit)="saveProduct()" [formGroup]="productForm">
         <div class="edit-form">
             <div class="edit-line">
-                <label>ID</label>
-                <span>{{productForm.controls.id.value}}</span>
+                <label>key</label>
+                <span>{{productForm.controls.key.value}}</span>
             </div>
             <div class="edit-line">
                 <label>名前</label>
@@ -56,10 +56,9 @@
             </button>
             <span class="button white" [routerLink]="['/products',productForm.controls.id.value,'edit']"></span>
             <button class=" button black " (click)="saveProduct() ">保存</button> -->
-            <span class="button white" [routerLink]="['/products',productForm.controls.id.value]">
-                キャンセル
-            </span>
+            <span class="button white" [routerLink]="['/products',productForm.controls.key.value]">キャンセル</span>
             <button class="button black" [class.disabled]="productForm.invalid">保存</button>
+            <button class="button red" (click)="deleteProduct()">削除</button>
         </div>
     </form>
 </div>
