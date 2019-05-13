@@ -15,9 +15,11 @@ export const environment = {
       messagingSenderId: '975244675635',
       appId: '1:975244675635:web:54f64eeb97865f69'
     },
-    user: '4nr0POWJBcV8xyc3MWuGoFt5d3C3',
-    email: 'tsaida0225@gmail.com',
-    password: 'joe001Rainbow',
+    user: {
+      name: '4nr0POWJBcV8xyc3MWuGoFt5d3C3',
+      email: 'tsaida0225@gmail.com',
+      password: 'joe001Rainbow',
+    },
   },
 };
 

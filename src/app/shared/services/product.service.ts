@@ -3,32 +3,31 @@ import { Product } from '../../shared/models/product';
 import { Observable, of } from 'rxjs/index';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { FirebaseService } from './firebase.service';
+import { SharedInfoService } from '../../shared/services/shared-info.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  BASE_URL = 'https://fir-sample-ac84d.firebaseio.com'; // <= 追加
-  UID = '4nr0POWJBcV8xyc3MWuGoFt5d3C3';  // <= 追加
-  TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjYxZDE5OWRkZDBlZTVlNzMzZGI0YTliN2FiNDAxZGRhMzgxNTliNjIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZmlyLXNhbXBsZS1hYzg0ZCIsImF1ZCI6ImZpci1zYW1wbGUtYWM4NGQiLCJhdXRoX3RpbWUiOjE1NTc3Mzk3MDIsInVzZXJfaWQiOiI0bnIwUE9XSkJjVjh4eWMzTVd1R29GdDVkM0MzIiwic3ViIjoiNG5yMFBPV0pCY1Y4eHljM01XdUdvRnQ1ZDNDMyIsImlhdCI6MTU1NzczOTcwMiwiZXhwIjoxNTU3NzQzMzAyLCJlbWFpbCI6InRzYWlkYTAyMjVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRzYWlkYTAyMjVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.pIkB7EX1SscDa9CaiEhMhr0MGqfNHMIYie3e73ohFdpHzFs81XjwM3Q8Jd2DkStQUJHnvK2yCoB1RN3MNV6YKuHyTj_fh6nCjT9A_dIxyA1QKOm8OmH7DB9jtYixCJxVlWPS1HEiobZ65fjGuaSvfZdIVFg7MT9Cj-g_xlxgR2pf__nqw1EhprD2ehN_sTmHHTBXz6e6b3oquCJhdBW_BSilzmjqfODF-Fy0tWUpGHU9AV0ZF62Vfbd9LhUnoC_R0zLS6of9P4F5abaSSOmr39AMRdrKkPDs9Lo1aiCURsk5WyvLuLLGVdK9V4rlIrHVZeoS5jkY4Thydi16O-8Haw';
-
-  // products: Product[] = [
-  //   new Product(1, 'Angular入門書「天地創造の章」', 3800, '神は云った。「Angularあれ」。するとAngularが出来た。'),
-  //   new Product(2, 'Angularを覚えたら、年収も上がって、女の子にももてて、人生が変わりました！', 410, '年収300万のSEが、Angularと出会う。それは、小さな会社の社畜が始めた、最初の抵抗だった。'),
-  //   new Product(3, '異世界転生から始めるAngular生活(1)', 680,
-  //     'スパゲッティの沼でデスマーチ真っ最中の田中。過酷な日々からの現実逃避か彼は、異世界に放り出され、そこでAngularの入門書を拾う。現実逃避でさえ、プログラミングをするしかない彼に待ち受けるのは！？'),
-  // ];
+  BASE_URL = '';
+  UID = '';  // <= 追加
+  TOKEN = '';
 
   constructor(
     private http: HttpClient,
-  ) { }
-
-  // list(): Observable<Product[]> {
-  //   // return of(this.products);
-
-  // }
+    private sharedInfo: SharedInfoService,
+    private firebaseService: FirebaseService
+  ) {
+    this.BASE_URL = this.sharedInfo.getUrl();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    // this.TOKEN =  this.sharedInfo.getFireBaseToken();
+  }
 
   list(): Observable<Product[]> { // 変更↓
+    this.TOKEN =  this.sharedInfo.getFireBaseToken();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    console.log(this.UID + ' & =>'+ this.TOKEN);
     return this.http.get(`${this.BASE_URL}/users/${this.UID}/products.json`, { params: { auth: this.TOKEN } }).pipe(
       map((response: any) => {
         if (response) {
@@ -42,28 +41,23 @@ export class ProductService {
       }
       )
     );
-
-    // map((response: any) => {
-    //   Object.keys(response).map((key: string) => {
-    //     console.log(response);
-    //     const prd = response[key];
-    //     return new Product(key, prd.name, prd.price, prd.description);
-    //   }
-    //   )
-    // )
   }
 
   create(product: Product): Observable<void> {
+    this.TOKEN =  this.sharedInfo.getFireBaseToken();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    console.log(this.UID + ' & =>'+ this.TOKEN);
     return this.http.post(`${this.BASE_URL}/users/${this.UID}/products.json`, product, { params: { auth: this.TOKEN } }).pipe(
-      map((response:any) => product.key = response.name),
+      map((response: any) => product.key = response.name),
     );
   }
 
   get(key: string): Observable<Product> {
-    // let target: Product = this.products[id - 1];
-    // return of(this.products[id - 1]);
+    this.TOKEN =  this.sharedInfo.getFireBaseToken();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    console.log(this.UID + ' & =>'+ this.TOKEN);
     return this.http.get(`${this.BASE_URL}/users/${this.UID}/products/${key}.json`, { params: { auth: this.TOKEN } }).pipe(
-      map((response:any) => {
+      map((response: any) => {
         return new Product(key, response.name, response.price, response.description);
       })
     );
@@ -71,14 +65,18 @@ export class ProductService {
   }
 
   delete(key: string): Observable<void> {
+    this.TOKEN =  this.sharedInfo.getFireBaseToken();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    console.log(this.TOKEN);
     return this.http.delete(`${this.BASE_URL}/users/${this.UID}/products/${key}.json`, { params: { auth: this.TOKEN } }).pipe(
       map(() => {})
     );
   }
 
   update(product: Product): Observable<void> {
-    // const index = this.products.findIndex((prd: Product) => prd.key === product.key);
-    // this.products[index] = product;
+    this.TOKEN =  this.sharedInfo.getFireBaseToken();
+    this.UID = this.sharedInfo.getFireBaseUserId();
+    console.log(this.UID + ' & =>'+ this.TOKEN);
     return this.http.patch(`${this.BASE_URL}/users/${this.UID}/products/${product.key}.json`,
     {
       name: product.name,
@@ -89,6 +87,5 @@ export class ProductService {
       map(() => {
       })
     );
-
   }
 }
